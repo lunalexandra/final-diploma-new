@@ -1,0 +1,1 @@
+export { SearchBlockSecondary } from "./SearchBlockSecondary"
