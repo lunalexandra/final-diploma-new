@@ -1,14 +1,17 @@
 import { useState } from "react";
+import { RootState } from "../../redux/store";
 import DatePicker from "react-datepicker";
 import { ru } from "date-fns/locale";
-//import { format } from "date-fns";
 import calendar from "../../assets/images/calendar.png";
+import { setDateFrom, setDateTo } from "../../redux/slices/dateSlice";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import "react-datepicker/dist/react-datepicker.css";
 import "./calendar.css";
 
 interface CalendarProps {
   id: string;
   classname: string;
+  type: "dateFrom" | "dateTo";
 }
 
 interface CustomHeaderProps {
@@ -17,11 +20,29 @@ interface CustomHeaderProps {
   increaseMonth: () => void;
 }
 
-export const Calendar: React.FC<CalendarProps> = ({ id, classname }) => {
-  const [startDate, setStartDate] = useState<Date | null>(null);
+export const Calendar: React.FC<CalendarProps> = ({ id, classname, type }) => {
+
+  const dispatch = useAppDispatch();
+
+  const value = useAppSelector((state: RootState) =>
+    type === "dateFrom" ? state.dates.dateFrom : state.dates.dateTo
+  );
+
+  const [startDate, setStartDate] = useState<Date | null>(
+    value ? new Date(value) : null
+  );
 
   const handleDateChange = (date: Date | null) => {
-    setStartDate(date);
+    if (date) {
+      const formattedDate = date.toISOString().split("T")[0];
+      if (type === "dateFrom") {
+        dispatch(setDateFrom(formattedDate)); // Сохраняем дату отправления
+      } else {
+        dispatch(setDateTo(formattedDate)); // Сохраняем дату прибытия
+      }
+    }
+    setStartDate(date); // Обновляем локальное состояние
+    console.log(`${type}: ${date ? date.toISOString().split("T")[0] : null}`);
   };
 
   const renderCustomHeader = ({
@@ -81,8 +102,3 @@ export const Calendar: React.FC<CalendarProps> = ({ id, classname }) => {
     </div>
   );
 };
-
-// const formatDate = (date: Date | null): string => {
-//   if (!date) return "";
-//   return format(date, "dd/MM/yyyy");
-// };

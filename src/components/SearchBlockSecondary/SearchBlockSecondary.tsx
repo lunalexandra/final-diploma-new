@@ -41,10 +41,12 @@ export const SearchBlockSecondary = () => {
           <div className={classes["search-secondary__date"]}>
             <Calendar
               id={"start-date-secondary"}
+              type="dateFrom"
               classname={"headline-block__form-start"}
             />
             <Calendar
               id={"return-date-secondary"}
+              type="dateTo"
               classname={"headline-block__form-return"}
             />
           </div>

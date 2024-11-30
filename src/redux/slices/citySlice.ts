@@ -4,21 +4,26 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 
+interface City {
+  name: string; // Название города
+  id: string; // ID города
+}
+
 // Тип состояния для городов
 interface CitiesState {
-  fromCity: string; // Город отправления
-  toCity: string; // Город назначения
-  departureSuggestions: string[];
-  destinationSuggestions: string[]; // Подсказки городов
-  loadingFromCity: boolean;
-  loadingToCity: boolean;// Состояние загрузки
-  error: string | null; // Ошибка, если запрос завершился неудачей
+  fromCity: City; // Город отправления
+  toCity: City; // Город прибытия
+  departureSuggestions: City[]; // Подсказки городов отправления
+  destinationSuggestions: City[]; // Подсказки городов прибытия
+  loadingFromCity: boolean; // Состояние загрузки для отправления
+  loadingToCity: boolean; // Состояние загрузки для прибытия
+  error: string | null; // Ошибка
 }
 
 // Начальное состояние
 const initialState: CitiesState = {
-  fromCity: "",
-  toCity: "",
+  fromCity: { name: "", id: "" },
+  toCity: { name: "", id: "" },
   departureSuggestions: [],
   destinationSuggestions: [],
   loadingFromCity: false,
@@ -30,7 +35,7 @@ const createSliceWithThunk = buildCreateSlice({
   creators: { asyncThunk: asyncThunkCreator },
 });
 
-// Срез для городов
+
 const citiesSlice = createSliceWithThunk({
   name: "cities",
   initialState,
@@ -38,25 +43,27 @@ const citiesSlice = createSliceWithThunk({
     CitiesState: (state) => state,
   },
   reducers: (create) => ({
-    setFromCity: create.reducer((state, action: PayloadAction<string>) => {
-      state.fromCity = action.payload;
-    }),
-    setToCity: create.reducer((state, action: PayloadAction<string>) => {
+    setFromCity: create.reducer(
+      (state, action: PayloadAction<City>) => {
+        state.fromCity = action.payload; // Устанавливаем объект с name и id
+      }
+    ),
+    setToCity: create.reducer((state, action: PayloadAction<City>) => {
       state.toCity = action.payload;
     }),
+
     clearSuggestions: create.reducer((state) => {
       state.departureSuggestions = [];
-    }),
-    destinationSuggestions: create.reducer((state) => {
       state.destinationSuggestions = [];
     }),
+
     swapCities: create.reducer((state) => {
-      const temp = state.fromCity;
-      state.fromCity = state.toCity;
-      state.toCity = temp;
-    }),
+    const temp = state.fromCity;
+    state.fromCity = state.toCity;
+    state.toCity = temp;
+  }),
     
-    fetchDepartureSuggestions: create.asyncThunk<string[],string,{ rejectValue: string }>(
+    fetchDepartureSuggestions: create.asyncThunk<City[], string,{ rejectValue: string }>(
       async (name, { rejectWithValue }) => {
         try {
           const response = await fetch(`${import.meta.env.VITE_API_URL}/routes/cities?name=${name}`);
@@ -65,8 +72,10 @@ const citiesSlice = createSliceWithThunk({
             return rejectWithValue("Не удалось загрузить данные о городах.");
           }
           const data = await response.json();
-          console.log("111")
-    return data.map((city: { name: string }) => city.name);
+          return data.map((city: { _id: string; name: string }) => ({
+            name: city.name,
+            id: city._id,
+          })); 
         } catch (error) {
           console.log(error)
           return rejectWithValue("Произошла ошибка при загрузке данных.");
@@ -90,7 +99,7 @@ const citiesSlice = createSliceWithThunk({
       }
     ),
 
-    fetchDestinationSuggestions: create.asyncThunk<string[],string,{ rejectValue: string }>(
+    fetchDestinationSuggestions: create.asyncThunk<City[],string,{ rejectValue: string }>(
       async (name, { rejectWithValue }) => {
         try {
           const response = await fetch(`${import.meta.env.VITE_API_URL}/routes/cities?name=${name}`);
@@ -99,9 +108,11 @@ const citiesSlice = createSliceWithThunk({
             return rejectWithValue("Не удалось загрузить данные о городах.");
           }
           const data = await response.json();
-          console.log("111")
-    return data.map((city: { name: string }) => city.name);
-        } catch (error) {
+          return data.map((city: { _id: string; name: string }) => ({
+            name: city.name,
+            id: city._id,
+          })); 
+        }  catch (error) {
           console.log(error)
           return rejectWithValue("Произошла ошибка при загрузке данных.");
         }

@@ -12,10 +12,10 @@ import "./cityInput.css";
 
 interface CityInputProps {
   type: "fromCity" | "toCity"; // Тип ввода (откуда/куда)
-  id: string;
+  idForLabel: string;
 }
 
-const CityInput: React.FC<CityInputProps> = ({ type, id }) => {
+const CityInput: React.FC<CityInputProps> = ({ type, idForLabel }) => {
   const dispatch = useAppDispatch();
 
   // Выбираем текущее значение и список подсказок из Redux в зависимости от типа инпута
@@ -28,7 +28,9 @@ const CityInput: React.FC<CityInputProps> = ({ type, id }) => {
       : state.cities.destinationSuggestions
   );
   const loading = useAppSelector((state: RootState) =>
-    type === "fromCity" ? state.cities.loadingFromCity : state.cities.loadingToCity
+    type === "fromCity"
+      ? state.cities.loadingFromCity
+      : state.cities.loadingToCity
   );
 
   // Локальное состояние для управления видимостью подсказок
@@ -42,9 +44,9 @@ const CityInput: React.FC<CityInputProps> = ({ type, id }) => {
 
     // Устанавливаем текущее значение
     if (type === "fromCity") {
-      dispatch(setFromCity(newValue));
+      dispatch(setFromCity({ name: newValue, id: "" }));
     } else {
-      dispatch(setToCity(newValue));
+      dispatch(setToCity({ name: newValue, id: "" }));
     }
 
     // Если длина ввода больше 2 символов, загружаем подсказки
@@ -61,7 +63,7 @@ const CityInput: React.FC<CityInputProps> = ({ type, id }) => {
     }
   };
 
-  const handleSuggestionClick = (city: string) => {
+  const handleSuggestionClick = (city: { name: string; id: string }) => {
     if (type === "fromCity") {
       dispatch(setFromCity(city));
     } else {
@@ -73,7 +75,10 @@ const CityInput: React.FC<CityInputProps> = ({ type, id }) => {
 
   // Обработчик для клика вне подсказок
   const handleClickOutside = (event: MouseEvent) => {
-    if (suggestionsRef.current && !suggestionsRef.current.contains(event.target as Node)) {
+    if (
+      suggestionsRef.current &&
+      !suggestionsRef.current.contains(event.target as Node)
+    ) {
       setShowSuggestions(false); // Скрываем подсказки
     }
   };
@@ -89,23 +94,33 @@ const CityInput: React.FC<CityInputProps> = ({ type, id }) => {
   return (
     <div className="city-input-container" ref={suggestionsRef}>
       <input
-        id={id}
+        id={idForLabel}
         type="text"
-        value={value}
+        value={value.name}
         onChange={handleInputChange}
         className={type === "fromCity" ? "input-from" : "input-to"}
         placeholder={type === "fromCity" ? "Откуда" : "Куда"}
       />
-      {loading && <p style={{position: "absolute", color: "#928f94", paddingTop: "4px"}}>Поиск...</p>}
+      {loading && (
+        <p
+          style={{ position: "absolute", color: "#928f94", paddingTop: "4px" }}
+        >
+          Поиск...
+        </p>
+      )}
       {showSuggestions && suggestions.length > 0 && (
         <div className="suggestions-container">
-          {suggestions.map((city, index) => (
+          {suggestions.map((city) => (
             <div
-              key={index}
-              className={type === "fromCity" ? "suggestion-item suggestion-item-from" : "suggestion-item suggestion-item-to"}
+              key={city.id}
+              className={
+                type === "fromCity"
+                  ? "suggestion-item suggestion-item-from"
+                  : "suggestion-item suggestion-item-to"
+              }
               onClick={() => handleSuggestionClick(city)}
             >
-              {city}
+              {city.name}
             </div>
           ))}
         </div>

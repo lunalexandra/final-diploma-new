@@ -1,10 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import  citiesReducer  from "../slices/citySlice";
+import datesReducer  from "../slices/dateSlice";
 
 export const store = configureStore({
   reducer: {
     cities: citiesReducer,
-    //users: usersReducer
+    dates: datesReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware()
 });
