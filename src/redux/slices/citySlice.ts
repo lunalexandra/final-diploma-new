@@ -4,10 +4,7 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 
-interface City {
-  name: string; // Название города
-  id: string; // ID города
-}
+import { City } from "../../types/TrainTypes";
 
 // Тип состояния для городов
 interface CitiesState {
@@ -22,8 +19,8 @@ interface CitiesState {
 
 // Начальное состояние
 const initialState: CitiesState = {
-  fromCity: { name: "", id: "" },
-  toCity: { name: "", id: "" },
+  fromCity: { name: "", _id: "" },
+  toCity: { name: "", _id: "" },
   departureSuggestions: [],
   destinationSuggestions: [],
   loadingFromCity: false,

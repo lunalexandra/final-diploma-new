@@ -7,11 +7,13 @@
   box-shadow: 0px 4px 4px 0px #00000040;
 }
 
+.react-datepicker__input-container {
+}
+
 .react-datepicker__input-container input {
-  width: 322px;
-  padding: 20px 73px 20px 20px;
   font-size: 18px;
   font-weight: 400;
+  padding: 20px 73px 20px 20px;
   color: #292929;
 }
 
@@ -41,6 +43,9 @@
   background-color: #fff;
   height: 80px;
   padding-top: 20px;
+}
+
+.react-datepicker__header--custom {
 }
 
 .react-datepicker__current-month {
@@ -90,4 +95,17 @@
 
 .react-datepicker__day--weekend {
   font-weight: bold;
+}
+
+.headline-block__form-start,
+.headline-block__form-return {
+  width: 322px;
+}
+
+.filter__container-from,
+.filter__container-to {
+  position: relative;
+  width: 295px;
+  height: 43px;
+  align-items: start;
 }

@@ -10,7 +10,7 @@ import "./calendar.css";
 
 interface CalendarProps {
   id: string;
-  classname: string;
+  classname?: string;
   type: "dateFrom" | "dateTo";
 }
 

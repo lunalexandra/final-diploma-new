@@ -44,9 +44,9 @@ const CityInput: React.FC<CityInputProps> = ({ type, idForLabel }) => {
 
     // Устанавливаем текущее значение
     if (type === "fromCity") {
-      dispatch(setFromCity({ name: newValue, id: "" }));
+      dispatch(setFromCity({ name: newValue, _id: "" }));
     } else {
-      dispatch(setToCity({ name: newValue, id: "" }));
+      dispatch(setToCity({ name: newValue, _id: "" }));
     }
 
     // Если длина ввода больше 2 символов, загружаем подсказки
@@ -63,7 +63,7 @@ const CityInput: React.FC<CityInputProps> = ({ type, idForLabel }) => {
     }
   };
 
-  const handleSuggestionClick = (city: { name: string; id: string }) => {
+  const handleSuggestionClick = (city: { name: string; _id: string }) => {
     if (type === "fromCity") {
       dispatch(setFromCity(city));
     } else {
@@ -112,7 +112,7 @@ const CityInput: React.FC<CityInputProps> = ({ type, idForLabel }) => {
         <div className="suggestions-container">
           {suggestions.map((city) => (
             <div
-              key={city.id}
+              key={city._id}
               className={
                 type === "fromCity"
                   ? "suggestion-item suggestion-item-from"

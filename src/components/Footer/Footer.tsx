@@ -1,6 +1,6 @@
-import { ContactInfo } from "./ContactInfo/ContactInfo";
-import { SubscriptionBlock } from "./SubscriptionBlock/SubscriptionBlock";
-import { LogoLine } from "./LogoLine/LogoLine";
+import { ContactInfo } from "./contactInfo/ContactInfo";
+import { SubscriptionBlock } from "./subscriptionBlock/SubscriptionBlock";
+import { LogoLine } from "./logoLine/LogoLine";
 import classes from "./footer.module.css";
 
 export const Footer = () => {

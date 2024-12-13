@@ -10,9 +10,11 @@ html {
 }
 
 aside {
+  display: flex;
   width: 32%;
-  min-height: 200px;
-  background-color: #d7e4ea;
+  flex-direction: column;
+  align-items: end;
+  padding: 100px 0 193px 13%;
 }
 
 main {

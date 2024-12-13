@@ -11,4 +11,4 @@ export { SearchBlockSecondary } from  "./SearchBlockSecondary/SearchBlockSeconda
 export { ChangePlacesBtn } from "../components/buttons/ChangePlacesBtn"
 export { FindTicketsBtn } from "../components/buttons/FindTicketsBtn";
 export { StepsBar } from "../components/StepsBar";
-export { TripDetails } from "../components/TripDetails";
+export { Filter } from "../components/Filter";

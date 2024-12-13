@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { subscribeEmail } from "../../../api/subscribeEmail";
-import Tooltip from "../../../components/Tooltip/Tooltip";
+import Tooltip from "../../Tooltip/Tooltip";
 import Icon from "../../Icon/Icon"
 import { validateEmail } from "./validateEmail";
 import youtubeIcon from "/src/assets/images/youtube.png";

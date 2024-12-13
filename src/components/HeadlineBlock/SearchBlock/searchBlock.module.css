@@ -34,13 +34,6 @@
     gap: 34px;
 }
 
-.headline-block__form-start, .headline-block__form-return {
-    width: 322px;
-    padding: 20px 73px 20px 20px;
-    font-size: 18px;
-    font-weight: 400;
-}
-
 .headline-block__btn-box {
     display: flex;
     flex-direction: column;
