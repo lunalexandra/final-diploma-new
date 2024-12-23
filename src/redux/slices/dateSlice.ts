@@ -1,15 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { SearchOptions } from "../../types/SearchOptions";
 
-// Интерфейс для состояния
-interface DateState {
-  dateFrom: string; // дата отправления
-  dateTo: string;   // дата прибытия
-}
-
-// Начальное состояние
-const initialState: DateState = {
-  dateFrom: "",
-  dateTo: "",
+const initialState: SearchOptions = {
+  date_start: "",
+  date_end: "",
 };
 
 // Создание среза
@@ -19,11 +13,13 @@ const datesSlice = createSlice({
   reducers: {
     // Установка даты отправления
     setDateFrom: (state, action: PayloadAction<string>) => {
-      state.dateFrom = action.payload;
+      state.date_start = action.payload;
+      console.log(`Срез дата туда${state.date_start}`)
     },
     // Установка даты прибытия
     setDateTo: (state, action: PayloadAction<string>) => {
-      state.dateTo = action.payload;
+      state.date_end = action.payload;
+      console.log(`Срез дата оттуда${state.date_end}`)
     },
   },
 });

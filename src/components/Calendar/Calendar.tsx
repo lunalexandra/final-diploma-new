@@ -11,7 +11,8 @@ import "./calendar.css";
 interface CalendarProps {
   id: string;
   classname?: string;
-  type: "dateFrom" | "dateTo";
+  classnameImg?: string;
+  type: "date_start" | "date_end";
 }
 
 interface CustomHeaderProps {
@@ -20,30 +21,53 @@ interface CustomHeaderProps {
   increaseMonth: () => void;
 }
 
-export const Calendar: React.FC<CalendarProps> = ({ id, classname, type }) => {
-
+export const Calendar: React.FC<CalendarProps> = ({ id, classname, type, classnameImg}) => {
   const dispatch = useAppDispatch();
 
-  const value = useAppSelector((state: RootState) =>
-    type === "dateFrom" ? state.dates.dateFrom : state.dates.dateTo
+  const startDateValue = useAppSelector(
+    (state: RootState) => state.dates.date_start
+  );
+
+  const endDateValue = useAppSelector(
+    (state: RootState) => state.dates.date_end
   );
 
   const [startDate, setStartDate] = useState<Date | null>(
-    value ? new Date(value) : null
+    startDateValue ? new Date(startDateValue) : null
+  );
+  const [endDate, setEndDate] = useState<Date | null>(
+    endDateValue ? new Date(endDateValue) : null
   );
 
   const handleDateChange = (date: Date | null) => {
     if (date) {
-      const formattedDate = date.toISOString().split("T")[0];
-      if (type === "dateFrom") {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0"); // Месяцы начинаются с 0
+      const day = String(date.getDate()).padStart(2, "0");
+  
+      const formattedDate = `${year}-${month}-${day}`;
+  
+      if (type === "date_start") {
         dispatch(setDateFrom(formattedDate)); // Сохраняем дату отправления
+        setStartDate(date); // Устанавливаем начальную дату
+        console.log(`сохраняем в стейт дату start`);
       } else {
         dispatch(setDateTo(formattedDate)); // Сохраняем дату прибытия
+        setEndDate(date); // Устанавливаем конечную дату
+        console.log(`сохраняем в стейт дату end`);
+      }
+    } else {
+      // Если дата null (пользователь стер поле), сбрасываем в пустую строку
+      if (type === "date_start") {
+        dispatch(setDateFrom("")); // Сбрасываем дату отправления в пустую строку
+        setStartDate(null); // Сбрасываем startDate
+      } else {
+        dispatch(setDateTo("")); // Сбрасываем дату прибытия в пустую строку
+        setEndDate(null); // Сбрасываем endDate
       }
     }
-    setStartDate(date); // Обновляем локальное состояние
-    console.log(`${type}: ${date ? date.toISOString().split("T")[0] : null}`);
   };
+  
 
   const renderCustomHeader = ({
     date,
@@ -63,7 +87,7 @@ export const Calendar: React.FC<CalendarProps> = ({ id, classname, type }) => {
         >
           {"◀"}
         </button>
-        <span>{month}</span> {/* Отображаем только месяц */}
+        <span>{month}</span>
         <button
           className="increase-month-arrow"
           onClick={(e) => {
@@ -79,11 +103,10 @@ export const Calendar: React.FC<CalendarProps> = ({ id, classname, type }) => {
 
   return (
     <div className="calendar">
-      {/* Сам календарь */}
       <DatePicker
         id={id}
         locale={ru}
-        selected={startDate}
+        selected={type === "date_start" ? startDate : endDate}
         onChange={handleDateChange}
         dateFormat="dd/MM/yyyy"
         placeholderText="ДД/ММ/ГГ"
@@ -91,11 +114,11 @@ export const Calendar: React.FC<CalendarProps> = ({ id, classname, type }) => {
         popperPlacement="bottom-start"
         renderCustomHeader={renderCustomHeader}
       />
-      {/* Кнопка для открытия календаря */}
+
       <button
         type="button"
         onClick={() => document.getElementById(id)?.focus()}
-        className="custom-button"
+        className={classnameImg}
       >
         <img src={calendar} alt="calendar" className="custom-button-img" />
       </button>

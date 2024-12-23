@@ -1,3 +1,4 @@
+import FooterArrow from "../../../assets/images/arrow.png";
 import classes from "../footer.module.css";
 export const LogoLine = () => {
   return (
@@ -9,7 +10,7 @@ export const LogoLine = () => {
       </div>
       <div className={classes["footer__logoline-arrow"]}>
         <img
-          src="src/assets/images/arrow.png"
+          src={FooterArrow}
           alt=""
           className={classes["footer__logoline-icon"]}
         />

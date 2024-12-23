@@ -102,10 +102,23 @@
   width: 322px;
 }
 
-.filter__container-from,
-.filter__container-to {
+.filter__dates-from,
+.filter__dates-to {
   position: relative;
+  z-index: -1;
   width: 295px;
   height: 43px;
-  align-items: start;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.filter-img {
+  position: absolute;
+  top: 18px;
+  right: 38px;
+  width: 20px;
+  height: 22px;
+  background-color: transparent;
+  border: none;
 }

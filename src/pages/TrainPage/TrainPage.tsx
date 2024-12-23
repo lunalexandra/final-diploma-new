@@ -5,6 +5,7 @@ import {
   StepsBar,
   Filter,
 } from "../../components";
+import DirectionsList from "../../components/Trains/DirectionsList";
 import banner2 from "../../assets/images/second-banner.png";
 
 export const TrainPage = () => {
@@ -29,10 +30,14 @@ export const TrainPage = () => {
         }
       />
       <StepsBar currentStep={1} />
-      <aside>
-        <Filter />
-      </aside>
-      <main></main>
+      <div className="main-container">
+        <aside>
+          <Filter />
+        </aside>
+        <main>
+          <DirectionsList/>
+        </main>
+      </div>
       <Footer />
     </>
   );

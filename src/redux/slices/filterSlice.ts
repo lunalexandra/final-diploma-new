@@ -1,78 +1,99 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { SearchOptions } from "../../types/SearchOptions";
 
-interface FilterState {
-  filter: {
-    compartment: boolean;
-    coach: boolean;
-    loungeCar: boolean;
-    couchetteCar: boolean;
-    wiFi: boolean;
-    express: boolean;
-  };
-  price_from: number; // Цена от
-  price_to: number; // Цена до
-  start_departure_hour_from: number; // Час отбытия от
-  start_departure_hour_to: number; // Час отбытия до
-  start_arrival_hour_from: number; // Час прибытия от
-  start_arrival_hour_to: number; // Час прибытия до
-  end_departure_hour_from: number; // Час отбытия назад от
-  end_departure_hour_to: number; // Час отбытия назад до
-  end_arrival_hour_from: number; // Час прибытия назад от
-  end_arrival_hour_to: number; // Час прибытия назад до
-}
-
-const initialState: FilterState = {
-  filter: {
-    compartment: false,
-    coach: false,
-    loungeCar: false,
-    couchetteCar: false,
-    wiFi: false,
-    express: false,
-  },
-  price_from: 2000, // Начальное значение цены от
-  price_to: 5000, // Начальное значение цены до
-  start_departure_hour_from: 0, // Начальный час отбытия от
-  start_departure_hour_to: 24, // Начальный час отбытия до
-  start_arrival_hour_from: 0, // Начальный час прибытия от
-  start_arrival_hour_to: 24, // Начальный час прибытия до
-  end_departure_hour_from: 0, // Начальный час отбытия назад от
-  end_departure_hour_to: 24, // Начальный час отбытия назад до
-  end_arrival_hour_from: 0, // Начальный час прибытия назад от
-  end_arrival_hour_to: 24, // Начальный час прибытия назад до
+const initialState: SearchOptions = {
+  have_first_class: false,
+  have_second_class: false,
+  have_third_class: false,
+  have_fourth_class: false,
+  have_wifi: false,
+  have_express: false,
+  price_from: 2000,
+  price_to: 5000,
+  start_departure_hour_from: 0,
+  start_departure_hour_to: 24,
+  start_arrival_hour_from: 0,
+  start_arrival_hour_to: 24,
+  end_departure_hour_from: 0,
+  end_departure_hour_to: 24,
+  end_arrival_hour_from: 0,
+  end_arrival_hour_to: 24,
 };
 
 const filtersSlice = createSlice({
-  name: 'filters',
+  name: "filters",
   initialState,
   reducers: {
-    toggleFilter: (state, action: PayloadAction<{ filterType: keyof FilterState['filter'] }>) => {
-      const { filterType } = action.payload;
-      state.filter[filterType] = !state.filter[filterType];
+    toggleFilter: (
+      state,
+      action: PayloadAction<
+        | "have_first_class"
+        | "have_second_class"
+        | "have_third_class"
+        | "have_fourth_class"
+        | "have_wifi"
+        | "have_express"
+      >
+    ) => {
+      const filterType = action.payload;
+      state[filterType] = !state[filterType]; // Ошибка, почему не ясно!
+      //console.log(`${state[filterType]}`)
     },
-    updatePriceRange: (state, action: PayloadAction<{ from: number; to: number }>) => {
-      state.price_from = action.payload.from; // Обновляем цену от
-      state.price_to = action.payload.to; // Обновляем цену до
+
+    updatePriceRange: (
+      state,
+      action: PayloadAction<{ from: number; to: number }>
+    ) => {
+      const { from, to } = action.payload;
+      if (from >= 0 && to >= from) {
+        state.price_from = from;
+        state.price_to = to;
+      }
     },
-    updateStartDepartureHour: (state, action: PayloadAction<{ from: number; to: number }>) => {
-      state.start_departure_hour_from = action.payload.from; // Обновляем час отбытия от
-      state.start_departure_hour_to = action.payload.to; // Обновляем час отбытия до
+    updateStartDepartureHour: (
+      state,
+      action: PayloadAction<{ from: number; to: number }>
+    ) => {
+      const { from, to } = action.payload;
+      if (from >= 0 && from <= 24 && to >= 0 && to <= 24 && from <= to) {
+        state.start_departure_hour_from = from;
+        state.start_departure_hour_to = to;
+      }
     },
-    updateStartArrivalHour: (state, action: PayloadAction<{ from: number; to: number }>) => {
-      state.start_arrival_hour_from = action.payload.from; // Обновляем час прибытия от
-      state.start_arrival_hour_to = action.payload.to; // Обновляем час прибытия до
+    updateStartArrivalHour: (
+      state,
+      action: PayloadAction<{ from: number; to: number }>
+    ) => {
+      const { from, to } = action.payload;
+      if (from >= 0 && from <= 24 && to >= 0 && to <= 24 && from <= to) {
+        state.start_arrival_hour_from = from;
+        state.start_arrival_hour_to = to;
+      }
     },
-    updateEndDepartureHour: (state, action: PayloadAction<{ from: number; to: number }>) => {
-      state.end_departure_hour_from = action.payload.from; // Обновляем час отбытия назад от
-      state.end_departure_hour_to = action.payload.to; // Обновляем час отбытия назад до
+    updateEndDepartureHour: (
+      state,
+      action: PayloadAction<{ from: number; to: number }>
+    ) => {
+      const { from, to } = action.payload;
+      if (from >= 0 && from <= 24 && to >= 0 && to <= 24 && from <= to) {
+        state.end_departure_hour_from = from;
+        state.end_departure_hour_to = to;
+      }
     },
-    updateEndArrivalHour: (state, action: PayloadAction<{ from: number; to: number }>) => {
-      state.end_arrival_hour_from = action.payload.from; // Обновляем час прибытия назад от
-      state.end_arrival_hour_to = action.payload.to; // Обновляем час прибытия назад до
+    updateEndArrivalHour: (
+      state,
+      action: PayloadAction<{ from: number; to: number }>
+    ) => {
+      const { from, to } = action.payload;
+      if (from >= 0 && from <= 24 && to >= 0 && to <= 24 && from <= to) {
+        state.end_arrival_hour_from = from;
+        state.end_arrival_hour_to = to;
+      }
     },
   },
 });
 
+// Экспорт действий и редюсера
 export const {
   toggleFilter,
   updatePriceRange,

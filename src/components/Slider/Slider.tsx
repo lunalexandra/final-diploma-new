@@ -9,7 +9,7 @@ import {
   updateEndDepartureHour,
   updateEndArrivalHour,
 } from "../../redux/slices/filterSlice";
-import "./priceSlider.css";
+import "./slider.css";
 
 interface SliderProps {
   type:
@@ -27,33 +27,31 @@ const Slider: React.FC<SliderProps> = ({ type, min, max, step }) => {
   const dispatch = useAppDispatch();
 
   // Получаем значения из Redux состояния в зависимости от типа слайдера
-  const price_from = useAppSelector(
-    (state: RootState) => state.filters.price_from
-  );
-  const price_to = useAppSelector((state: RootState) => state.filters.price_to);
+  const price_from = useAppSelector((state: RootState) => state.filters.price_from ?? min); // Исправлено
+  const price_to = useAppSelector((state: RootState) => state.filters.price_to ?? max); // Исправлено
   const start_departure_hour_from = useAppSelector(
-    (state: RootState) => state.filters.start_departure_hour_from
+    (state: RootState) => state.filters.start_departure_hour_from ?? min // Исправлено
   );
   const start_departure_hour_to = useAppSelector(
-    (state: RootState) => state.filters.start_departure_hour_to
+    (state: RootState) => state.filters.start_departure_hour_to ?? max // Исправлено
   );
   const start_arrival_hour_from = useAppSelector(
-    (state: RootState) => state.filters.start_arrival_hour_from
+    (state: RootState) => state.filters.start_arrival_hour_from ?? min // Исправлено
   );
   const start_arrival_hour_to = useAppSelector(
-    (state: RootState) => state.filters.start_arrival_hour_to
+    (state: RootState) => state.filters.start_arrival_hour_to ?? max // Исправлено
   );
   const end_departure_hour_from = useAppSelector(
-    (state: RootState) => state.filters.end_departure_hour_from
+    (state: RootState) => state.filters.end_departure_hour_from ?? min // Исправлено
   );
   const end_departure_hour_to = useAppSelector(
-    (state: RootState) => state.filters.end_departure_hour_to
+    (state: RootState) => state.filters.end_departure_hour_to ?? max // Исправлено
   );
   const end_arrival_hour_from = useAppSelector(
-    (state: RootState) => state.filters.end_arrival_hour_from
+    (state: RootState) => state.filters.end_arrival_hour_from ?? min // Исправлено
   );
   const end_arrival_hour_to = useAppSelector(
-    (state: RootState) => state.filters.end_arrival_hour_to
+    (state: RootState) => state.filters.end_arrival_hour_to ?? max // Исправлено
   );
 
   // Обработчики изменения для разных типов слайдеров

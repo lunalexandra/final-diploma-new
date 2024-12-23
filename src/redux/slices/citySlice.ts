@@ -4,7 +4,7 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 
-import { City } from "../../types/TrainTypes";
+import { City } from "../../types/SearchOptions";
 
 // Тип состояния для городов
 interface CitiesState {
@@ -42,7 +42,8 @@ const citiesSlice = createSliceWithThunk({
   reducers: (create) => ({
     setFromCity: create.reducer(
       (state, action: PayloadAction<City>) => {
-        state.fromCity = action.payload; // Устанавливаем объект с name и id
+        state.fromCity = action.payload;
+        //console.log(`Срез: ${state.fromCity._id} ${state.fromCity.name}`)
       }
     ),
     setToCity: create.reducer((state, action: PayloadAction<City>) => {
@@ -71,7 +72,7 @@ const citiesSlice = createSliceWithThunk({
           const data = await response.json();
           return data.map((city: { _id: string; name: string }) => ({
             name: city.name,
-            id: city._id,
+            _id: city._id,
           })); 
         } catch (error) {
           console.log(error)
@@ -107,7 +108,7 @@ const citiesSlice = createSliceWithThunk({
           const data = await response.json();
           return data.map((city: { _id: string; name: string }) => ({
             name: city.name,
-            id: city._id,
+            _id: city._id,
           })); 
         }  catch (error) {
           console.log(error)

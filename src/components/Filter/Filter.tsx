@@ -18,17 +18,19 @@ export const Filter = () => {
     <>
       <div className={classes["filter__container"]}>
         <div className={classes["filter__dates"]}>
-          <label htmlFor="">Дата поездки</label>
+          <label className={classes["filter__dates-label"]} htmlFor="filter-date-from">Дата поездки</label>
           <Calendar
             id={"filter-date-from"}
-            type="dateFrom"
+            type="date_start"
             classname={"filter__dates-from"}
+            classnameImg={"filter-img"}
           />
-          <label htmlFor="">Дата возвращения</label>
+          <label className={classes["filter__dates-label"]} htmlFor="filter-date-to">Дата возвращения</label>
           <Calendar
             id={"filter-date-to"}
-            type="dateTo"
+            type="date_end"
             classname={"filter__dates-to"}
+            classnameImg={"filter-img"}
           />
         </div>
         <div className={classes["filter__wagons"]}>
@@ -40,7 +42,7 @@ export const Filter = () => {
                 classname={classes["wagons__icon"]}
               />
             </div>
-            <ToggleSwitch filterType={"compartment"} label={"Купе"} />
+            <ToggleSwitch filterType={"have_second_class"} label={"Купе"} />
           </div>
 
           <div className={classes["wagons__item"]}>
@@ -51,7 +53,7 @@ export const Filter = () => {
                 classname={classes["wagons__icon"]}
               />
             </div>
-            <ToggleSwitch filterType={"couchetteCar"} label={"Плацкарт"} />
+            <ToggleSwitch filterType={"have_third_class"} label={"Плацкарт"} />
           </div>
 
           <div className={classes["wagons__item"]}>
@@ -62,7 +64,7 @@ export const Filter = () => {
                 classname={classes["wagons__icon"]}
               />{" "}
             </div>
-            <ToggleSwitch filterType={"coach"} label={"Сидячий"} />
+            <ToggleSwitch filterType={"have_fourth_class"} label={"Сидячий"} />
           </div>
 
           <div className={classes["wagons__item"]}>
@@ -73,7 +75,7 @@ export const Filter = () => {
                 classname={classes["wagons__icon"]}
               />{" "}
             </div>
-            <ToggleSwitch filterType={"loungeCar"} label={"Люкс"} />
+            <ToggleSwitch filterType={"have_first_class"} label={"Люкс"} />
           </div>
 
           <div className={classes["wagons__item"]}>
@@ -84,7 +86,7 @@ export const Filter = () => {
                 classname={classes["wagons"]}
               />{" "}
             </div>
-            <ToggleSwitch filterType={"wiFi"} label={"Wi-Fi"} />
+            <ToggleSwitch filterType={"have_wifi"} label={"Wi-Fi"} />
           </div>
 
           <div className={classes["wagons__item"]}>
@@ -95,7 +97,7 @@ export const Filter = () => {
                 classname={classes["wagons__icon"]}
               />
             </div>
-            <ToggleSwitch filterType={"express"} label={"Экспресс"} />
+            <ToggleSwitch filterType={"have_express"} label={"Экспресс"} />
           </div>
         </div>
         <div className={classes["filter__cost"]}>

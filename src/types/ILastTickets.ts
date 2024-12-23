@@ -1,8 +1,3 @@
-export interface City {
-  _id: string;
-  name: string;
-}
-
 export interface ILastTickets {
   departure: {
     _id: string

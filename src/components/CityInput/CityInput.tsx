@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { RootState } from "../../redux/store";
 import {
   setFromCity,
@@ -18,7 +18,6 @@ interface CityInputProps {
 const CityInput: React.FC<CityInputProps> = ({ type, idForLabel }) => {
   const dispatch = useAppDispatch();
 
-  // Выбираем текущее значение и список подсказок из Redux в зависимости от типа инпута
   const value = useAppSelector((state: RootState) =>
     type === "fromCity" ? state.cities.fromCity : state.cities.toCity
   );

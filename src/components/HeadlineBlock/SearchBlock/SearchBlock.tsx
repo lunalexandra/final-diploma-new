@@ -44,13 +44,15 @@ export const SearchBlock: React.FC<SearchBlockProps> = ({style, styleBtn}) => {
           <div className={classes["headline-block__form-date"]}>
             <Calendar
               id={"start-date"}
-              type={"dateFrom"}
+              type={"date_start"}
               classname={"headline-block__form-start"}
+              classnameImg={"custom-button"}
             />
             <Calendar
               id={"return-date"}
-              type={"dateTo"}
+              type={"date_end"}
               classname={"headline-block__form-return"}
+              classnameImg={"custom-button"}
             />
           </div>
         </div>

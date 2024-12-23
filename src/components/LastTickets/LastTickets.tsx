@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchLastTickets } from "../../api/fetchLastTickets";
 import { LastTicketsCard } from "./lastTicketsCard/LastTicketsCard";
-import { ILastTickets } from "../../types/TrainTypes";
+import { ILastTickets } from "../../types/ILastTickets";
 
 const LastTickets: React.FC = () => {
   const [tickets, setTickets] = useState<ILastTickets[]>([]);
@@ -12,7 +12,7 @@ const LastTickets: React.FC = () => {
     setLoading(true);
     try {
       const data = await fetchLastTickets();
-      console.log(data);
+      //console.log(data);
       if (data) {
         setTickets(data);
       } else {

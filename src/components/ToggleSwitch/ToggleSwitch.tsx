@@ -1,19 +1,29 @@
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { RootState } from "../../redux/store";
 import { toggleFilter } from "../../redux/slices/filterSlice";
 import "./toggleSwitch.css";
 
+// Изменим тип filterType на строку
 interface ToggleSwitchProps {
-  filterType: keyof RootState["filters"]["filter"];
+  filterType: | "have_first_class"
+  | "have_second_class"
+  | "have_third_class"
+  | "have_fourth_class"
+  | "have_wifi"
+  | "have_express"; // Используем ключи из SearchOptions
   label: string;
 }
 
 const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ filterType, label }) => {
   const dispatch = useAppDispatch();
-  const isChecked = useAppSelector((state) => state.filters.filter[filterType]);
+  
+  // Здесь мы обращаемся к фильтру через ключ filterType
+  const isChecked = useAppSelector((state) => {
+    const filterValue = state.filters[filterType];
+    return typeof filterValue === 'boolean' ? filterValue : false; // Значение по умолчанию false
+  });
 
   const handleChange = () => {
-    dispatch(toggleFilter({ filterType }));
+    dispatch(toggleFilter(filterType)); // Передаем только filterType как строку
   };
 
   return (
