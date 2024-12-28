@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { RootState } from "../../redux/store";
 import DatePicker from "react-datepicker";
 import { ru } from "date-fns/locale";
+import { RootState } from "../../redux/store";
 import calendar from "../../assets/images/calendar.png";
 import { setDateFrom, setDateTo } from "../../redux/slices/dateSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks";
@@ -50,11 +50,11 @@ export const Calendar: React.FC<CalendarProps> = ({ id, classname, type, classna
       if (type === "date_start") {
         dispatch(setDateFrom(formattedDate)); // Сохраняем дату отправления
         setStartDate(date); // Устанавливаем начальную дату
-        console.log(`сохраняем в стейт дату start`);
+        //console.log(`сохраняем в стейт дату start`);
       } else {
         dispatch(setDateTo(formattedDate)); // Сохраняем дату прибытия
         setEndDate(date); // Устанавливаем конечную дату
-        console.log(`сохраняем в стейт дату end`);
+        //console.log(`сохраняем в стейт дату end`);
       }
     } else {
       // Если дата null (пользователь стер поле), сбрасываем в пустую строку

@@ -11,7 +11,6 @@ interface DirectionsState {
   error: string | null; // Ошибка, если она возникла
 }
 
-// Начальное состояние
 const initialState: DirectionsState = {
   directions: [],
   options: {},
@@ -21,14 +20,14 @@ const initialState: DirectionsState = {
 };
 
 export const fetchDirections = createAsyncThunk<
-  TrainInfo[],
+  { items: TrainInfo[]; total_count: number },
   string,
   { rejectValue: string }
 >("directions/fetchDirections", async (_, { getState, rejectWithValue }) => {
   const { fromCity, toCity } = (getState() as RootState).cities;
   const { date_start, date_end } = (getState() as RootState).dates;
-  const filterOptions = (getState() as RootState).filters; // исправлено
-  const sortOptions = (getState() as RootState).sort; // исправлено
+  const filterOptions = (getState() as RootState).filters;
+  const sortOptions = (getState() as RootState).sort;
 
   if (!fromCity || !toCity) {
     console.log("Нет выбранных городов");
@@ -95,9 +94,15 @@ export const fetchDirections = createAsyncThunk<
       filterParams.append("have_fourth_class", "true");
     if (filterOptions.have_wifi) filterParams.append("have_wifi", "true");
     if (filterOptions.have_express) filterParams.append("have_express", "true");
-    if (sortOptions.limit) filterParams.append("limit", String(sortOptions.limit));
+    if (sortOptions.limit)
+      filterParams.append("limit", String(sortOptions.limit));
     if (sortOptions.sort) filterParams.append("sort", sortOptions.sort);
-    console.log("Параметры фильтра после добавления сортировки:", filterParams.toString());
+    if (sortOptions.offset)
+      filterParams.append("offset", String(sortOptions.offset));
+    // console.log(
+    //   "Параметры фильтра после добавления сортировки:",
+    //   filterParams.toString()
+    // );
 
     const response = await fetch(
       `${import.meta.env.VITE_API_URL}/routes?$from_city_id=${
@@ -111,16 +116,19 @@ export const fetchDirections = createAsyncThunk<
     const data = await response.json();
 
     if (!data.items || !Array.isArray(data.items)) {
-      console.error("Неверный формат данных:", data);
+      //console.error("Неверный формат данных:", data);
       return rejectWithValue("Получены некорректные данные о направлениях.");
     }
+
     console.log(
-      `Отправленный запрос: ${import.meta.env.VITE_API_URL}/routes?from_city_id=${
-        fromCity._id
-      }&to_city_id=${toCity._id}&${filterParams.toString()}`
+      `Отправленный запрос: ${
+        import.meta.env.VITE_API_URL
+      }/routes?from_city_id=${fromCity._id}&to_city_id=${
+        toCity._id
+      }&${filterParams.toString()}`
     );
-    console.log("Элементы:", JSON.stringify(data.items, null, 2));
-    return data.items;
+    console.log(data);
+    return { items: data.items, total_count: data.total_count };
   } catch (error) {
     console.log(`Ошибка: ${error}`);
     return rejectWithValue("Произошла ошибка при загрузке данных.");
@@ -133,7 +141,6 @@ const directionsSlice = createSlice({
   reducers: {
     setDirections(state, action: PayloadAction<TrainInfo[]>) {
       state.directions = action.payload;
-      state.total_count = action.payload.length; // Это будет 0, если массив пустой
     },
     setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
@@ -153,8 +160,8 @@ const directionsSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchDirections.fulfilled, (state, action) => {
-        state.directions = action.payload;
-        state.total_count = action.payload.length; // Если массив пустой, это будет 0
+        state.directions = action.payload.items;
+        state.total_count = action.payload.total_count;
         state.loading = false;
         state.error = null;
       })

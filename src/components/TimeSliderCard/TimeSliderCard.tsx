@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Slider from "../Slider/Slider";
+import Slider from "../slider/Slider";
 import arrowRight from "../../assets/images/arrow-right.png";
 import arrowLeft from "../../assets/images/arrow-left.png";
-import classes from "./expandableBlock.module.css";
+import classes from "./timeSliderCard.module.css";
 
 interface TimeSliderCardProps {
   title: "Туда" | "Обратно";
@@ -39,17 +39,17 @@ const TimeSliderCard: React.FC<TimeSliderCardProps> = ({ title }) => {
         <div className={classes["departure-container"]}>
                   <p className={classes["departure-time"]}>Время отбытия</p>
         {title === "Туда" ? (
-          <Slider type="startDeparture" min={0} max={24} step={1} />
+          <Slider key="slider-startDeparture" type="startDeparture" min={0} max={24} step={1} />
         ) : (
-          <Slider type="endDeparture" min={0} max={24} step={1} />
+          <Slider key="slider-endDeparture" type="endDeparture" min={0} max={24} step={1} />
         )}
         </div>
 <div className={classes["arrival-container"]}>
           <p className={classes["arrival-time"]}>Время прибытия</p>
         {title === "Туда" ? (
-          <Slider type="startArrival" min={0} max={24} step={1} />
+          <Slider key="slider-startArrival" type="startArrival" min={0} max={24} step={1} />
         ) : (
-          <Slider type="endArrival" min={0} max={24} step={1} />
+          <Slider key="slider-endArrival" type="endArrival" min={0} max={24} step={1} />
         )}
       </div>
 </div>

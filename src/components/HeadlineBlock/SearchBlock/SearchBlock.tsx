@@ -1,21 +1,21 @@
 import { useAppDispatch } from "../../../hooks";
 import { swapCities } from "../../../redux/slices/citySlice";
-import { Calendar } from "../../Calendar";
-import { ChangePlacesBtn } from "../../buttons/ChangePlacesBtn";
-import { FindTicketsBtn } from "../../buttons/FindTicketsBtn";
-import CityInput from "../../CityInput/CityInput";
+import { Calendar } from "../../calendar/Calendar";
+import { ChangePlacesBtn } from "../../buttons/changePlacesBtn";
+import { FindTicketsBtn } from "../../buttons/findTicketsBtn";
+import CityInput from "../../cityInput/CityInput";
 import classes from "../SearchBlock/searchBlock.module.css";
 
 interface SearchBlockProps {
   style?: React.CSSProperties;
-  styleBtn?: React.CSSProperties; // Определяем пропс style как необязательный
+  styleBtn?: React.CSSProperties;
 }
 
 export const SearchBlock: React.FC<SearchBlockProps> = ({style, styleBtn}) => {
   const dispatch = useAppDispatch();
 
   const handleChangePlaces = () => {
-    dispatch(swapCities()); // Вызываем action для обмена полей
+    dispatch(swapCities());
   };
 
   return (

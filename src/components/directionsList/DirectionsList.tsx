@@ -7,13 +7,14 @@ import {
 import { RootState } from "../../redux/store";
 import { TrainInfo } from "../../types/TrainInfo";
 import { TrainCard } from "./trainCard/TrainCard";
-import  {SortBlock}  from "./SortBlock/SortBlock";
-import classes from "./trains.module.css";
+import  {SortBlock}  from "./sortBlock/SortBlock";
+import { Pagination } from "./pagination/Pagination";
+import classes from "./directionsList.module.css";
+
 
 const DirectionsList: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  // Получаем данные из состояния Redux
   const { directions, total_count, loading, error } = useAppSelector(
     (state: RootState) => state.directions
   );
@@ -44,23 +45,20 @@ const DirectionsList: React.FC = () => {
     end_arrival_hour_to,
   } = useAppSelector((state: RootState) => state.filters);
 
-  const { sort, limit } = useAppSelector((state: RootState) => state.sort)
+  const { sort, limit, offset } = useAppSelector((state: RootState) => state.sort)
 
-  // Локальное состояние для массива карточек
   const [cardArray, setCardArray] = useState<TrainInfo[]>([]);
 
   useEffect(() => {
-    // Запрашиваем направления, когда компонент монтируется
     if (fromCity && toCity) {
-      dispatch(fetchDirections("")); // Вызываем без аргументов
+      dispatch(fetchDirections(""));
       console.log(
         `Названия городов в направлениях: ${fromCity._id}, ${toCity._id}`
       );
     } else {
-      console.error("Города не выбраны.");
+      //console.error("Города не выбраны.");
     }
 
-    // Очищаем список при размонтировании компонента
     return () => {
       dispatch(clearDirections());
     };
@@ -87,29 +85,30 @@ const DirectionsList: React.FC = () => {
     end_arrival_hour_from,
     end_arrival_hour_to,
     sort,
-    limit
+    limit,
+    offset
   ]); 
 
   useEffect(() => {
-    // Обновляем локальное состояние при изменении данных directions
     if (directions.length > 0) {
-      setCardArray(directions); // Обновляем состояние с новыми направлениями
+      setCardArray(directions);
     }
-  }, [directions]); // Добавляем directions в зависимости
+  }, [directions]);
 
   if (loading) {
     return <div>Загрузка...</div>;
   }
 
   if (error) {
+    <div>Произошла ошибка при загрузке направлений. Пожалуйста, попробуйте позже.</div>
     console.log(error);
   }
 
   return (
-    <div>
-      <SortBlock count={total_count} />
+    <div className={classes["container"]}>
+      <SortBlock />
       {total_count === 0 ? (
-        <p></p>
+        <></>
       ) : (
         <div className={classes.list}>
           {cardArray.map((direction: TrainInfo, index) => (
@@ -138,6 +137,7 @@ const DirectionsList: React.FC = () => {
           ))}
         </div>
       )}
+      <Pagination/>
     </div>
   );
 };

@@ -4,7 +4,7 @@ import "./stepsBar.css";
 const steps = ["Билеты", "Пассажиры", "Оплата", "Проверка"];
 
 interface StepsBarProps {
-  currentStep: number; // Текущий активный шаг
+  currentStep: number;
 }
 
 export const StepsBar: React.FC<StepsBarProps> = ({ currentStep }) => {

@@ -10,18 +10,18 @@ const types = {
   second: "купе",
   third: "плацкарт",
   fourth: "сидячий",
-} as const; // Используем 'as const' для создания литерального типа
+} as const;
 
 type SeatType = keyof typeof types; 
 
 interface SeatsInfo {
-  [key: string]: number | null; // Количество мест для каждого типа
+  [key: string]: number | null;
 }
 
 // Интерфейс для информации о ценах
 interface PriceInfo {
   [key: string]: {
-    bottom_price: number; // Цена
+    bottom_price: number;
   };
 }
   
@@ -41,7 +41,7 @@ interface TrainCardProps {
   arrivalDuration?: number;
   arrivalToTime?: number;
   arrivalStationTo?: string;
-  seats_info: SeatsInfo; // Информация о количестве мест
+  seats_info: SeatsInfo;
   price_info: PriceInfo;
 }
 

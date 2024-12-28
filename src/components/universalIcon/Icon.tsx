@@ -17,7 +17,7 @@ const Icon: React.FC<IconProps> = ({ normalSrc, activeSrc, hoverSrc, alt, classn
 
     
     setTimeout(() => {
-      setIsActive(false);  // Сбрасываем активность после завершения клика
+      setIsActive(false);
     }, 1000);
   };
 
@@ -34,11 +34,11 @@ const Icon: React.FC<IconProps> = ({ normalSrc, activeSrc, hoverSrc, alt, classn
 
   return (
     <img
-      src={getIconSrc()}  // Меняем картинку в зависимости от состояния
+      src={getIconSrc()}
       alt={alt}
       onClick={handleClick} 
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}  // При уводе мыши возвращаем в исходное состояние
+      onMouseLeave={() => setIsHovered(false)}
       className={classname}
     />
   );

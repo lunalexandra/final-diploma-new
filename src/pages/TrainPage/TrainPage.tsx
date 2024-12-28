@@ -5,7 +5,7 @@ import {
   StepsBar,
   Filter,
 } from "../../components";
-import DirectionsList from "../../components/Trains/DirectionsList";
+import DirectionsList from "../../components/directionsList/DirectionsList";
 import banner2 from "../../assets/images/second-banner.png";
 
 export const TrainPage = () => {

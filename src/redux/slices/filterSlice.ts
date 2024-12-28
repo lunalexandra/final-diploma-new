@@ -36,7 +36,7 @@ const filtersSlice = createSlice({
       >
     ) => {
       const filterType = action.payload;
-      state[filterType] = !state[filterType]; // Ошибка, почему не ясно!
+      state[filterType] = !state[filterType];
       //console.log(`${state[filterType]}`)
     },
 
@@ -93,7 +93,6 @@ const filtersSlice = createSlice({
   },
 });
 
-// Экспорт действий и редюсера
 export const {
   toggleFilter,
   updatePriceRange,

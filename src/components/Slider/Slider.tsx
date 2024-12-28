@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Range } from "react-range";
 import { formatTime } from "./formatTime";
 import { useAppDispatch, useAppSelector } from "../../hooks";
@@ -10,6 +11,7 @@ import {
   updateEndArrivalHour,
 } from "../../redux/slices/filterSlice";
 import "./slider.css";
+
 
 interface SliderProps {
   type:
@@ -26,59 +28,35 @@ interface SliderProps {
 const Slider: React.FC<SliderProps> = ({ type, min, max, step }) => {
   const dispatch = useAppDispatch();
 
-  // Получаем значения из Redux состояния в зависимости от типа слайдера
-  const price_from = useAppSelector((state: RootState) => state.filters.price_from ?? min); // Исправлено
-  const price_to = useAppSelector((state: RootState) => state.filters.price_to ?? max); // Исправлено
+  const price_from = useAppSelector((state: RootState) => state.filters.price_from ?? min);
+  const price_to = useAppSelector((state: RootState) => state.filters.price_to ?? max);
   const start_departure_hour_from = useAppSelector(
-    (state: RootState) => state.filters.start_departure_hour_from ?? min // Исправлено
+    (state: RootState) => state.filters.start_departure_hour_from ?? min
   );
   const start_departure_hour_to = useAppSelector(
-    (state: RootState) => state.filters.start_departure_hour_to ?? max // Исправлено
+    (state: RootState) => state.filters.start_departure_hour_to ?? max 
   );
   const start_arrival_hour_from = useAppSelector(
-    (state: RootState) => state.filters.start_arrival_hour_from ?? min // Исправлено
+    (state: RootState) => state.filters.start_arrival_hour_from ?? min
   );
   const start_arrival_hour_to = useAppSelector(
-    (state: RootState) => state.filters.start_arrival_hour_to ?? max // Исправлено
+    (state: RootState) => state.filters.start_arrival_hour_to ?? max 
   );
   const end_departure_hour_from = useAppSelector(
-    (state: RootState) => state.filters.end_departure_hour_from ?? min // Исправлено
+    (state: RootState) => state.filters.end_departure_hour_from ?? min 
   );
   const end_departure_hour_to = useAppSelector(
-    (state: RootState) => state.filters.end_departure_hour_to ?? max // Исправлено
+    (state: RootState) => state.filters.end_departure_hour_to ?? max 
   );
   const end_arrival_hour_from = useAppSelector(
-    (state: RootState) => state.filters.end_arrival_hour_from ?? min // Исправлено
+    (state: RootState) => state.filters.end_arrival_hour_from ?? min 
   );
   const end_arrival_hour_to = useAppSelector(
-    (state: RootState) => state.filters.end_arrival_hour_to ?? max // Исправлено
+    (state: RootState) => state.filters.end_arrival_hour_to ?? max 
   );
 
-  // Обработчики изменения для разных типов слайдеров
-  const handleChange = (values: number[]) => {
-    switch (type) {
-      case "price":
-        dispatch(updatePriceRange({ from: values[0], to: values[1] }));
-        break;
-      case "startDeparture":
-        dispatch(updateStartDepartureHour({ from: values[0], to: values[1] }));
-        break;
-      case "startArrival":
-        dispatch(updateStartArrivalHour({ from: values[0], to: values[1] }));
-        break;
-      case "endDeparture":
-        dispatch(updateEndDepartureHour({ from: values[0], to: values[1] }));
-        break;
-      case "endArrival":
-        dispatch(updateEndArrivalHour({ from: values[0], to: values[1] }));
-        break;
-      default:
-        break;
-    }
-  };
-
-  // Выбор значений в зависимости от типа
-  const values = (() => {
+  // Локальное состояние для значений слайдера
+  const [values, setValues] = useState<number[]>(() => {
     switch (type) {
       case "price":
         return [price_from, price_to];
@@ -91,18 +69,43 @@ const Slider: React.FC<SliderProps> = ({ type, min, max, step }) => {
       case "endArrival":
         return [end_arrival_hour_from, end_arrival_hour_to];
       default:
-        return [min, max]; // По умолчанию
+        return [min, max];
     }
-  })();
+  });
+
+  // Обновляем Redux только при завершении изменения
+  const handleFinalChange = (newValues: number[]) => {
+    setValues(newValues);
+    switch (type) {
+      case "price":
+        dispatch(updatePriceRange({ from: newValues[0], to: newValues[1] }));
+        break;
+      case "startDeparture":
+        dispatch(updateStartDepartureHour({ from: newValues[0], to: newValues[1] }));
+        break;
+      case "startArrival":
+        dispatch(updateStartArrivalHour({ from: newValues[0], to: newValues[1] }));
+        break;
+      case "endDeparture":
+        dispatch(updateEndDepartureHour({ from: newValues[0], to: newValues[1] }));
+        break;
+      case "endArrival":
+        dispatch(updateEndArrivalHour({ from: newValues[0], to: newValues[1] }));
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <div className="slider-container">
       <Range
-        values={values} // Используем выбранные значения
+        values={values}
         step={step}
         min={min}
         max={max}
-        onChange={handleChange}
+        onChange={setValues} // Обновляем локальное состояние
+        onFinalChange={handleFinalChange} // Обновляем Redux только при завершении изменения
         renderTrack={({ props, children }) => (
           <div
             {...props}
@@ -122,49 +125,49 @@ const Slider: React.FC<SliderProps> = ({ type, min, max, step }) => {
                 left: `${((values[0] - min) / (max - min)) * 100}%`,
                 right: `${100 - ((values[1] - min) / (max - min)) * 100}%`,
                 height: type === "price" ? "19px" : "10px",
-                backgroundColor: "#FFA800", // Цвет закрашенного промежутка
+                backgroundColor: "#FFA800", 
                 zIndex: 1,
               }}
-            >
-              {" "}
-            </div>
+            />
             {children}
           </div>
         )}
-        renderThumb={({ props, index }) => (
-          <div
-            {...props}
-            style={{
-              height: type === "price" ? "24px" : "20px",
-              width: type === "price" ? "24px" : "20px",
-              backgroundColor: "#fff",
-              borderRadius: "50%",
-              position: "absolute",
-              zIndex: "20",
-            }}
-          >
+        renderThumb={({ props, index }) => {
+          return (
             <div
-              className="thumb-value"
+              {...props}
               style={{
-                color: "#fff",
-                fontSize: "16px",
-                fontWeight: "400",
-                width: "60px",
-                textAlign: "end",
-                left: `${(values[0] / max) * 100}%`,
-                right: `${100 - (values[1] / max) * 100}%`,
+                height: type === "price" ? "24px" : "20px",
+                width: type === "price" ? "24px" : "20px",
+                backgroundColor: "#fff",
+                borderRadius: "50%",
+                position: "absolute",
+                zIndex: "20",
               }}
             >
-              {type === "price"
-                ? index === 0
-                  ? values[0]
-                  : values[1]
-                : index === 0
-                ? formatTime(values[0])
-                : formatTime(values[1])}
+              <div
+                className="thumb-value"
+                style={{
+                  color: "#fff",
+                  fontSize: "16px",
+                  fontWeight: "400",
+                  width: "60px",
+                  textAlign: "end",
+                  left: `${(values[0] / max) * 100}%`,
+                  right: `${100 - (values[1] / max) * 100}%`,
+                }}
+              >
+                {type === "price"
+                  ? index === 0
+                    ? values[0]
+                    : values[1]
+                  : index === 0
+                  ? formatTime(values[0])
+                  : formatTime(values[1])}
+              </div>
             </div>
-          </div>
-        )}
+          );
+        }}
       />
       <div className="min-max"></div>
     </div>

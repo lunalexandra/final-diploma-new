@@ -12,7 +12,6 @@ const LastTickets: React.FC = () => {
     setLoading(true);
     try {
       const data = await fetchLastTickets();
-      //console.log(data);
       if (data) {
         setTickets(data);
       } else {

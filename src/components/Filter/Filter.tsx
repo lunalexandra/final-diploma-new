@@ -1,15 +1,15 @@
-import { Calendar } from "../Calendar";
-import Icon from "../Icon/Icon";
-import Slider from "../Slider/Slider";
-import  LastTickets from "../LastTickets/LastTickets";
-import TimeSliderCard from "../TimeSliderCard/TimeSliderCard";
+import { Calendar } from "../calendar/Calendar";
+import Icon from "../universalIcon/Icon";
+import Slider from "../slider/Slider";
+import  LastTickets from "../lastTickets/LastTickets";
+import TimeSliderCard from "../timeSliderCard/TimeSliderCard";
 import compartmentIcon from "../../assets/images/wagons/compartment.png";
 import couchetteCarIcon from "../../assets/images/wagons/couchette-car.png";
 import coachIcon from "../../assets/images/wagons/coach.png";
 import loungeCarIcon from "../../assets/images/wagons/lux.png";
 import WiFiIcon from "../../assets/images/wagons/wi-fi.png";
 import expressIcon from "../../assets/images/wagons/express.png";
-import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
+import ToggleSwitch from "../toggleSwitch/ToggleSwitch";
 import classes from "./filter.module.css";
 
 export const Filter = () => { 
@@ -107,7 +107,7 @@ export const Filter = () => {
             <span>до</span>
           </p>
           <div className={classes["slider-box"]}>
-            <Slider type="price" min={1000} max={15000} step={100} />
+            <Slider key="slider-price" type="price" min={1000} max={15000} step={100} />
           </div>
         </div>
         <TimeSliderCard title={"Туда"} />

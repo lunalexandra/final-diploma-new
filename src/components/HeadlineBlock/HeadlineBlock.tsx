@@ -1,5 +1,5 @@
-import { TitleBlock } from "./TitleBlock/TitleBlock";
-import { SearchBlock } from "./SearchBlock/SearchBlock";
+import { TitleBlock } from "./titleBlock/TitleBlock";
+import { SearchBlock } from "./searchBlock/SearchBlock";
 
 import classes from "./headlineBlock.module.css";
 export const HeadlineBlock = () => {

@@ -8,7 +8,7 @@ export const HomePage = () => {
       <AboutUs />
       <HowItWorks />
       <Reviews />
-      <Footer></Footer>
+      <Footer />
     </>
   );
 };

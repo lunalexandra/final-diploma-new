@@ -4,6 +4,7 @@ import { SearchOptions } from "../../types/SearchOptions";
 const initialState: SearchOptions = {
   limit: 5,
   sort: "date",
+  offset: 0,
 };
 
 const sortSlice = createSlice({
@@ -21,9 +22,13 @@ const sortSlice = createSlice({
         console.log(`Меняем в срезе ${state.sort}`);
       }
     },
+    setOffset: (state, action: PayloadAction<number>) => {
+        state.offset = action.payload;
+        //console.log(`Оффсет ${state.offset}`);
+    },
   },
 });
 
-export const { setLimit, setSort } = sortSlice.actions;
+export const { setLimit, setSort, setOffset } = sortSlice.actions;
 
 export default sortSlice.reducer;

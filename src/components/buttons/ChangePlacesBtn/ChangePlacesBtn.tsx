@@ -1,5 +1,5 @@
-import classes from "./changePlacesBtn.module.css";
 import changeIcon from "/src/assets/images/change.png";
+import classes from "./changePlacesBtn.module.css";
 
 interface ChangePlacesBtnProps {
     onClick: () => void;

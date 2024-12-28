@@ -11,7 +11,7 @@ import { useAppSelector, useAppDispatch } from "../../hooks";
 import "./cityInput.css";
 
 interface CityInputProps {
-  type: "fromCity" | "toCity"; // Тип ввода (откуда/куда)
+  type: "fromCity" | "toCity";
   idForLabel: string;
 }
 
@@ -32,33 +32,29 @@ const CityInput: React.FC<CityInputProps> = ({ type, idForLabel }) => {
       : state.cities.loadingToCity
   );
 
-  // Локальное состояние для управления видимостью подсказок
   const [showSuggestions, setShowSuggestions] = useState(false);
 
-  // Реф для контейнера подсказок
   const suggestionsRef = useRef<HTMLDivElement>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
 
-    // Устанавливаем текущее значение
     if (type === "fromCity") {
       dispatch(setFromCity({ name: newValue, _id: "" }));
     } else {
       dispatch(setToCity({ name: newValue, _id: "" }));
     }
 
-    // Если длина ввода больше 2 символов, загружаем подсказки
     if (newValue.length >= 2) {
       if (type === "fromCity") {
         dispatch(fetchDepartureSuggestions(newValue));
       } else {
         dispatch(fetchDestinationSuggestions(newValue));
       }
-      setShowSuggestions(true); // Показываем подсказки
+      setShowSuggestions(true); 
     } else {
       dispatch(clearSuggestions());
-      setShowSuggestions(false); // Скрываем подсказки
+      setShowSuggestions(false); 
     }
   };
 
@@ -69,20 +65,18 @@ const CityInput: React.FC<CityInputProps> = ({ type, idForLabel }) => {
       dispatch(setToCity(city));
     }
     dispatch(clearSuggestions());
-    setShowSuggestions(false); // Скрываем подсказки после выбора
+    setShowSuggestions(false); 
   };
 
-  // Обработчик для клика вне подсказок
   const handleClickOutside = (event: MouseEvent) => {
     if (
       suggestionsRef.current &&
       !suggestionsRef.current.contains(event.target as Node)
     ) {
-      setShowSuggestions(false); // Скрываем подсказки
+      setShowSuggestions(false);
     }
   };
 
-  // Устанавливаем/удаляем обработчик кликов по документу
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {

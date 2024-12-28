@@ -1,4 +1,3 @@
-import classes from "./lastTicketsCard.module.css";
 import tripleIcons from "../../../assets/images/triple.png";
 interface LastTicketsCardProps {
   cityFrom: string;
@@ -7,6 +6,7 @@ interface LastTicketsCardProps {
   stationTo?: string;
   price: number;
 }
+import classes from "./lastTicketsCard.module.css";
 
 const LastTicketsCard: React.FC<LastTicketsCardProps> = ({
   cityFrom,

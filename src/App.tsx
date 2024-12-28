@@ -1,6 +1,6 @@
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider, /*Form*/ } from 'react-router-dom';
 import { HomePage, TrainPage } from './pages';
-import { Layout } from './components/Layout';
+import { Layout } from './components/layout';
 import "./App.css";
 
 export default function App() {

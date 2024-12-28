@@ -1,43 +1,38 @@
+import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { setLimit, setSort } from "../../../redux/slices/sortSlice";
 import { RootState } from "../../../redux/store";
 import classes from "./sortBlock.module.css";
-import { useState } from "react"; // Импортируем useState для состояния
 
-interface SortBlockProps {
-  count: number; // Измените тип на Props
-}
-
-const SortBlock: React.FC<SortBlockProps> = ({ count }) => {
+const SortBlock = () => {
   const dispatch = useAppDispatch();
+  const { total_count } = useAppSelector(
+    (state: RootState) => state.directions
+  );
   const { limit, sort } = useAppSelector((state: RootState) => state.sort);
 
-  // Состояние для отслеживания видимости меню сортировки
   const [isSortMenuVisible, setIsSortMenuVisible] = useState(false);
 
-  // Обработчик для изменения лимита
   const handleLimitChange = (newLimit: number) => {
-    console.log("Новое значение лимита:", newLimit);
+    //console.log("Новое значение лимита:", newLimit);
     dispatch(setLimit(newLimit));
   };
 
-  // Обработчик для изменения сортировки
   const handleSortChange = (newSort: "date" | "min-price" | "duration") => {
     dispatch(setSort(newSort));
-    console.log(newSort)
-    setIsSortMenuVisible(false); // Скрываем меню после выбора
+    //console.log(newSort);
+    setIsSortMenuVisible(false);
   };
 
   return (
     <div className={classes.container}>
-      <div className={classes.found}>Найдено {count}</div>
+      <div className={classes.found}>Найдено {total_count}</div>
       <div
         className={classes.sort}
-        onMouseEnter={() => setIsSortMenuVisible(true)} // Показать меню при наведении
-        onMouseLeave={() => setIsSortMenuVisible(false)} // Скрыть меню при уходе мыши
+        onMouseEnter={() => setIsSortMenuVisible(true)}
+        onMouseLeave={() => setIsSortMenuVisible(false)}
       >
-        сортировать по: 
-        {/* Если меню видно, показываем список */}
+        сортировать по:
         {isSortMenuVisible ? (
           <div className={classes.dropdown}>
             <div
@@ -50,22 +45,26 @@ const SortBlock: React.FC<SortBlockProps> = ({ count }) => {
               onClick={() => handleSortChange("min-price")}
               className={classes.option}
             >
-             по стоимости
+              по стоимости
             </div>
             <div
               onClick={() => handleSortChange("duration")}
               className={classes.option}
             >
-             по длительности
+              по длительности
             </div>
           </div>
-        ): (<div className={classes["dropdown-hidden"]}>
-          <div
-            className={classes.selected}
-          >
-            {sort === "date" ? "по времени" : sort === "min-price" ? "по стоимости" : "по длительности"}
+        ) : (
+          <div className={classes["dropdown-hidden"]}>
+            <div className={classes.selected}>
+              {sort === "date"
+                ? "по времени"
+                : sort === "min-price"
+                ? "по стоимости"
+                : "по длительности"}
+            </div>
           </div>
-        </div>)}
+        )}
       </div>
       <div className={classes.show}>
         Показывать по:

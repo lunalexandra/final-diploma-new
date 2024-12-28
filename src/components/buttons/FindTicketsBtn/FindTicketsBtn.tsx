@@ -7,7 +7,7 @@ export const FindTicketsBtn = () => {
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log("click: find ticket");
+    //console.log("click: find ticket");
     navigate(`/trains`);
   };
 

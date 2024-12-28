@@ -9,14 +9,13 @@ interface ToggleSwitchProps {
   | "have_third_class"
   | "have_fourth_class"
   | "have_wifi"
-  | "have_express"; // Используем ключи из SearchOptions
+  | "have_express";
   label: string;
 }
 
 const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ filterType, label }) => {
   const dispatch = useAppDispatch();
   
-  // Здесь мы обращаемся к фильтру через ключ filterType
   const isChecked = useAppSelector((state) => {
     const filterValue = state.filters[filterType];
     return typeof filterValue === 'boolean' ? filterValue : false; // Значение по умолчанию false
